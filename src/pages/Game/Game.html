@@ -1,0 +1,89 @@
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../styles/Game.css">
+</head>
+
+
+<body>
+<div class="game">
+    <div class="game-bar">
+        <div class="player-bar">
+            <img class="avatar" id="enemy-avatar">
+            <div class="username"></div>
+        </div>
+        <div class="set-bar">
+            <div class="game-picture" id="stone-enemy"></div>
+            <div class="game-picture" id="scissors-enemy"></div>
+            <div class="game-picture" id="paper-enemy"></div>
+        </div>
+    </div>
+    <div class="game-result" id="game-result">game-result</div>
+    <div class="game-bar">
+        <div class="player-bar">
+            <img class="avatar" id="player-avatar">
+            <button class="leave-group">Уйти</button>
+        </div>
+        <div class="set-bar">
+            <img onclick=chooseItem(event) name="stone" class="game-picture" id="stone-player"></img>
+            <img onclick=chooseItem(event) name="scissors" class="game-picture" id="scissors-player"></img>
+            <img onclick=chooseItem(event) name="paper" class="game-picture" id="paper-player"></img>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script>
+    let itemChoice = null
+    const game_result = document.getElementById("game-result")
+    let current_user_id = null
+    async function fetchData(){
+        fetch('http://localhost:8000/groups/12345/',
+            {headers: {
+                    Authorization: 'Bearer ' + localStorage.token
+                }}).then((response) => response.json()).
+                    then(result => current_user_id = result.current_user_id)
+
+
+    }
+    fetchData()
+    const chatSocket = new WebSocket(`ws://localhost:8000/game/4444/`)
+
+    chatSocket.onopen = function(e){
+        console.log("connexted")
+    }
+
+    chatSocket.onmessage = function(event) {
+
+        const data = JSON.parse(event.data);
+        console.log(event.data)
+        if (data.user_id !== current_user_id && current_user_id) {
+            game_result.innerHTML = "Противник сделал выбор"
+        }
+    }
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+
+    function chooseItem(event){
+        console.log(event.target.name)
+        let item = document.getElementById(event.target.id)
+
+        if(itemChoice == null){
+            item.style.background = "blue"
+            itemChoice = 'filled'
+        } else {
+            console.log("Предмет уже выбран")
+        }
+        chatSocket.send(JSON.stringify({
+            'type':"choice_message",
+            "user_id": current_user_id,
+            'message': event.target.name
+        }))
+    }
+
+
+</script>
+

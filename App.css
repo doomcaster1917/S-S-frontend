@@ -1,0 +1,23 @@
+.navbar{
+    height: 50px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 15px;
+    background: lightgray;
+}
+
+.navbar_links{
+    margin-left: auto;
+    display: inline;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar_links li{
+    margin-left: auto;
+    margin-right: 300px;
+    display: inline
+}
