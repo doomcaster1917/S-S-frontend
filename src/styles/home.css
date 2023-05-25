@@ -1,0 +1,46 @@
+body{
+    background: azure;
+}
+
+.tooltip{
+    height: 400px;
+    width: 1000px;
+    margin:auto;
+    border: 10px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#invite{
+    height: 90%;
+    width: 45%;
+    margin:auto;
+    border: 10px solid black;
+}
+
+#my-invitation{
+    height: 90%;
+    width: 45%;
+    margin:auto;
+    border: 10px solid black;
+
+}
+
+#selectEnemy{
+    height: 70%;
+    width: 65%
+}
+
+.option{
+    font-size: 25px;
+}
+
+.invite-button{
+    height: 25%;
+    width: 25%;
+}
+
+#take_invite{
+    display: none;
+}
